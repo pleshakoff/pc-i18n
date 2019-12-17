@@ -27,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.IntStream;
@@ -57,11 +58,9 @@ public class I18nConfiguration implements WebMvcConfigurer {
     @Bean
     public ResourceBundleMessageSource messageSource(){
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        String[] messagesArray = new String[additionalMessages.size()+1];
-        messagesArray[0] = "messages";
-        IntStream.range(1,additionalMessages.size()).forEach(i ->
-                messagesArray[i] = additionalMessages.get(i-1)
-        );
+        additionalMessages.add("messages");
+        additionalMessages.add("securityClientMessages");
+        String[] messagesArray =additionalMessages.toArray(new String[0]);;
         messageSource.setBasenames(messagesArray);
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
